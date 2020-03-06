@@ -4,9 +4,11 @@ import json
 
 from rest_framework.test import APITestCase, APIClient
 from django.utils.encoding import force_text
-from accounts.factories import UserFactory
 from django.contrib.auth.hashers import make_password
+
+from accounts.factories import UserFactory
 from drf_core import assertion
+from drf_core.factories import Sampling
 
 log = logging.getLogger('test')
 
@@ -17,6 +19,7 @@ class BaseTestCase(APITestCase, assertion.BaseAssertion):
     """
 
     api_client = APIClient()
+    sampling = Sampling()
     resource = None
 
     class Meta:
