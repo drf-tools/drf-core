@@ -8,7 +8,7 @@ from django.contrib.auth.hashers import make_password
 
 from accounts.factories import UserFactory
 from drf_core import assertion
-from drf_core.factories import Sampling
+from drf_core.sampling import Sampling
 
 log = logging.getLogger('test')
 
