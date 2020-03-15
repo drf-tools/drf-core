@@ -2,8 +2,9 @@ from pydoc import locate
 from importlib import import_module
 from django.conf import settings
 
+from app.helpers import pluralize
 
-class Sampling(object):
+class DataSampling(object):
 
     def __init__(self):
         # How many records will be created for each model.
@@ -18,17 +19,19 @@ class Sampling(object):
         self._import_factories()
 
     def generate_all(self):
-        """
-        Generate all data from all factories.
-        """
+        # Gererate all data
         for app, factory_apps in self.factories.items():
             self.data[app] = {}
 
             for factory_app in factory_apps:
                 items = []
+                sampling = self.sampling_records
                 model_name = factory_app.__name__.replace('Factory', '')
 
-                for _ in range(0, self.sampling_records):
+                if model_name == 'User':
+                    sampling=5
+
+                for _ in range(0, sampling):
                     item = factory_app()
                     items.append(item)
 
@@ -59,13 +62,11 @@ class Sampling(object):
         return items
 
     def clean_up(self):
-        """
-        Clean all generated data.
-        """
+        # Clean all generated data.
         for app, data_models in self.data.items():
             for model_name, items in data_models.items():
                 try:
-                    # Try to remove by bulk.
+                    # Load model
                     ids = []
                     model = locate(f'{app}.models.{model_name}')
 
@@ -74,8 +75,6 @@ class Sampling(object):
 
                     model.objects.filter(id__in=ids).delete()
                 except:
-                    # If bulk remove is not working, try to remove
-                    # record one by one.
                     for item in items:
                         item.delete()
 
@@ -83,19 +82,15 @@ class Sampling(object):
         return locate(f'{app_name}.factories.{model_name}Factory')
 
     def _import_factories(self):
-        """
-        Import all needed factories.
-        """
+        # Import all needed factories.
         for app in self.apps:
             self.factories[app] = []
             try:
-                # load factories modules
-                # Example: books.factories
                 module = import_module(f'{app}.factories')
 
                 for factory_app in module.apps:
                     self.factories[app].append(factory_app)
-            except:
+            except Exception as ex:
                 pass
 
         return self.factories
