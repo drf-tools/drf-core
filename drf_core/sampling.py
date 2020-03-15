@@ -28,7 +28,7 @@ class DataSampling(object):
                 sampling = self.sampling_records
                 model_name = factory_app.__name__.replace('Factory', '')
 
-                if model_name == 'User':
+                if model_name in ['User', 'SuperUser']:
                     sampling=5
 
                 for _ in range(0, sampling):
