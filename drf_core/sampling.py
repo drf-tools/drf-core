@@ -2,7 +2,8 @@ from pydoc import locate
 from importlib import import_module
 from django.conf import settings
 
-from app.helpers import pluralize
+from drf_core.utils import pluralize
+
 
 class DataSampling(object):
 
