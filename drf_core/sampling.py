@@ -5,7 +5,7 @@ from django.conf import settings
 from drf_core.utils import pluralize
 
 
-class DataSampling(object):
+class Sampling(object):
 
     def __init__(self):
         # How many records will be created for each model.
