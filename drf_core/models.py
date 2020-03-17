@@ -1,20 +1,14 @@
 from django.db.models import ( # noqa
     Model as BaseModel,
-    Manager as BaseManager,
-    signals,
-    Aggregate,
-    CharField,
-    PositiveSmallIntegerField,
+    SET_NULL
 )
-
-from rest_framework.authtoken.models import Token
-
+from django.conf import settings
 from django.db.models.query import QuerySet as BaseQuerySet
-
 
 from django_extensions.db.models import (
     TimeStampedModel as BaseTimeStampedModel
 )
+from rest_framework.authtoken.models import Token
 
 from drf_core import fields
 
@@ -78,6 +72,32 @@ def create_api_key(sender, instance, created, **kwargs):
 # ==============================================================================
 class Model(ArchivableModelMixin, BaseModel):
     objects = QuerySet.as_manager()
+
+    class Meta:
+        abstract = True
+
+
+# ==============================================================================
+# CommonInfoModel
+# ==============================================================================
+
+class CommonInfoModel(TimeStampedModel):
+
+    created_by = fields.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='Created by',
+        blank=True,
+        null=True,
+        on_delete=SET_NULL
+    )
+
+    last_modified_by = fields.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='Last modified by',
+        blank=True,
+        null=True,
+        on_delete=SET_NULL
+    )
 
     class Meta:
         abstract = True
