@@ -1,20 +1,14 @@
 from django.db.models import ( # noqa
     Model as BaseModel,
-    Manager as BaseManager,
-    signals,
-    Aggregate,
-    CharField,
-    PositiveSmallIntegerField,
+    SET_NULL
 )
-
-from rest_framework.authtoken.models import Token
-
+from django.conf import settings
 from django.db.models.query import QuerySet as BaseQuerySet
-
 
 from django_extensions.db.models import (
     TimeStampedModel as BaseTimeStampedModel
 )
+from rest_framework.authtoken.models import Token
 
 from drf_core import fields
 
@@ -48,13 +42,15 @@ class ArchivableModelMixin(BaseModel):
         abstract = True
 
     def archive(self):
-        """ Archives the model.
+        """
+        Archives the model.
         """
         self.archived = True
         self.save()
 
     def unarchive(self):
-        """ Unarchives the model.
+        """
+        Unarchives the model.
         """
         self.archived = False
         self.save()
@@ -78,6 +74,37 @@ def create_api_key(sender, instance, created, **kwargs):
 # ==============================================================================
 class Model(ArchivableModelMixin, BaseModel):
     objects = QuerySet.as_manager()
+
+    class Meta:
+        abstract = True
+
+
+# ==============================================================================
+# ContributorModel
+# ==============================================================================
+
+class ContributorModel(TimeStampedModel):
+    """
+    This model contains the contributor information about who is owner, who is
+    editor.
+    """
+    created_by = fields.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='Created by',
+        blank=True,
+        null=True,
+        on_delete=SET_NULL,
+        related_name='%(class)s_created_by',
+    )
+
+    last_modified_by = fields.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='Last modified by',
+        blank=True,
+        null=True,
+        on_delete=SET_NULL,
+        related_name='%(class)s_modified_by',
+    )
 
     class Meta:
         abstract = True
