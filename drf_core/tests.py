@@ -113,7 +113,6 @@ class BaseTestCase(APITestCase, assertion.BaseAssertion):
         self.auth = auth
         self.username = username
         self.password = password
-        # self.api_key = user.auth_token.key
         self.token = user.auth_token.key
 
         if auth == 'session':
