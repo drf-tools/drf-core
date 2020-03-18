@@ -42,13 +42,15 @@ class ArchivableModelMixin(BaseModel):
         abstract = True
 
     def archive(self):
-        """ Archives the model.
+        """
+        Archives the model.
         """
         self.archived = True
         self.save()
 
     def unarchive(self):
-        """ Unarchives the model.
+        """
+        Unarchives the model.
         """
         self.archived = False
         self.save()
@@ -78,17 +80,21 @@ class Model(ArchivableModelMixin, BaseModel):
 
 
 # ==============================================================================
-# CommonInfoModel
+# ContributorModel
 # ==============================================================================
 
-class CommonInfoModel(TimeStampedModel):
-
+class ContributorModel(TimeStampedModel):
+    """
+    This model contains the contributor information about who is owner, who is
+    editor.
+    """
     created_by = fields.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name='Created by',
         blank=True,
         null=True,
-        on_delete=SET_NULL
+        on_delete=SET_NULL,
+        related_name='%(class)s_created_by'
     )
 
     last_modified_by = fields.ForeignKey(
@@ -96,7 +102,8 @@ class CommonInfoModel(TimeStampedModel):
         verbose_name='Last modified by',
         blank=True,
         null=True,
-        on_delete=SET_NULL
+        on_delete=SET_NULL,
+        related_name='%(class)s_modified_by'
     )
 
     class Meta:
