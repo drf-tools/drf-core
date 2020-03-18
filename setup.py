@@ -7,7 +7,7 @@ f.close()
 
 setup(
     name='drf-core',
-    version='0.0.1',
+    version='0.0.3',
     description='Provide reusable modules of Django REST framework.',
     long_description=long_description,
     long_description_content_type='text/markdown',
