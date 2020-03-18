@@ -94,7 +94,7 @@ class ContributorModel(TimeStampedModel):
         blank=True,
         null=True,
         on_delete=SET_NULL,
-        related_name='%(class)s_created_by'
+        related_name='%(class)s_created_by',
     )
 
     last_modified_by = fields.ForeignKey(
@@ -103,7 +103,7 @@ class ContributorModel(TimeStampedModel):
         blank=True,
         null=True,
         on_delete=SET_NULL,
-        related_name='%(class)s_modified_by'
+        related_name='%(class)s_modified_by',
     )
 
     class Meta:
