@@ -41,12 +41,45 @@ class ArchivableModelMixin(BaseModel):
     class Meta:
         abstract = True
 
+    def _archive_on_delete(self):
+        """ Get all model instance related to manytomany field update
+        archive=True when parent modele is removed
+        """
+        # Get model name
+        model_name = self._meta.model_name.capitalize()
+
+        # Get pk value of instance
+        field_object_pk = self._meta.get_field('id')
+        field_value_pk = field_object_pk.value_from_object(self)
+
+        for field in self._meta.many_to_many:
+            # Get through model from 'manytomany' field
+            through_model = field.remote_field.through
+            filter_field = None
+
+            # Try to loop all fields of through_model.
+            # If have any field has foreign key related to model instance,
+            # get that field for filtering
+            for through_model_field in field.remote_field.through._meta.get_fields():
+                try:
+                    if through_model_field.remote_field.model.__name__ == model_name:
+                        filter_field = through_model_field.name
+                except:
+                    continue
+
+            # Filter and update related model via 'through_model' and 'filter_field'
+            if filter_field:
+                for related_queryset in through_model.objects.filter(**{filter_field: field_value_pk}):
+                    related_queryset.archived = True
+                    related_queryset.save()
+
     def archive(self):
         """
         Archives the model.
         """
         self.archived = True
         self.save()
+        self._archive_on_delete()
 
     def unarchive(self):
         """
