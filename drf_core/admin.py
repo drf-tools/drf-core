@@ -12,29 +12,8 @@ from django.contrib.admin import ( # noqa
     FieldListFilter,
     RelatedFieldListFilter,
     RelatedOnlyFieldListFilter,
-    VERTICAL, HORIZONTAL
-)
-
-# Just a facade imports for all admin fields available from django-admin-easy
-import easy
-from easy import ( # noqa
-    BaseAdminField,
-    SimpleAdminField,
-    BooleanAdminField,
-    ForeignKeyAdminField,
-    LinkChangeListAdminField,
-    ExternalLinkAdminField,
-    TemplateAdminField,
-    ImageAdminField,
-    FilterAdminField,
-    CacheAdminField,
-
-    with_tags,
-
-    # decorators
-    action,
-    smart,
-    short,
+    VERTICAL,
+    HORIZONTAL,
 )
 
 # ==============================================================================
