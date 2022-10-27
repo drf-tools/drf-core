@@ -3,7 +3,7 @@ import logging
 import json
 
 from rest_framework.test import APITestCase, APIClient
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.contrib.auth.hashers import make_password
 
 from accounts.factories import UserFactory
@@ -218,7 +218,7 @@ class BaseTestCase(APITestCase, assertion.BaseAssertion):
 
         try:
             self.assertValidJSONResponse(self.resp)
-            self.resp_text = force_text(self.resp.content)
+            self.resp_text = force_str(self.resp.content)
             self.resp_json = self.deserialize(self.resp)
 
             log.debug('--Response:--')
@@ -301,7 +301,7 @@ class BaseTestCase(APITestCase, assertion.BaseAssertion):
 
         try:
             # Try to decodes the response body
-            # self.resp_text = force_text(self.resp.content)
+            # self.resp_text = force_str(self.resp.content)
             self.resp_json = self.deserialize(self.resp)
             log.debug('--Response:--')
             log.debug(self.resp_json)
@@ -409,7 +409,7 @@ class BaseTestCase(APITestCase, assertion.BaseAssertion):
 
         try:
             # Try to decodes the response body
-            # self.resp_text = force_text(self.resp.content)
+            # self.resp_text = force_str(self.resp.content)
             self.resp_json = self.deserialize(self.resp)
             log.debug('--Response:--')
             log.debug(self.resp_json)
@@ -512,7 +512,7 @@ class BaseTestCase(APITestCase, assertion.BaseAssertion):
 
         try:
             # Try to decodes the response body
-            # self.resp_text = force_text(self.resp.content)
+            # self.resp_text = force_str(self.resp.content)
             self.resp_json = self.deserialize(self.resp)
             log.debug('--Response:--')
             log.debug(self.resp_json)
@@ -588,7 +588,7 @@ class BaseTestCase(APITestCase, assertion.BaseAssertion):
 
         try:
             # Try to decodes the response body
-            # self.resp_text = force_text(self.resp.content)
+            # self.resp_text = force_str(self.resp.content)
             self.resp_json = self.deserialize(self.resp)
             log.debug('--Response:--')
             log.debug(self.resp_json)
