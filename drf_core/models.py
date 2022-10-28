@@ -32,8 +32,8 @@ class ArchivableModelMixin(BaseModel):
     to archive objects instead of deleting them from the database.
     """
     objects = QuerySet.as_manager()
-    
-    id = fields.UUIDField(primary_key=True)
+
+    id = models.AutoField(primary_key=True)
 
     archived = fields.BooleanField(
         default=False,
