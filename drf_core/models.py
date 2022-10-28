@@ -93,8 +93,6 @@ class ContributorModel(TimeStampedModel):
     created_by = fields.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name='Created by',
-        blank=True,
-        null=True,
         on_delete=SET_NULL,
         related_name='%(class)s_created_by',
     )
@@ -102,8 +100,6 @@ class ContributorModel(TimeStampedModel):
     last_modified_by = fields.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name='Last modified by',
-        blank=True,
-        null=True,
         on_delete=SET_NULL,
         related_name='%(class)s_modified_by',
     )
